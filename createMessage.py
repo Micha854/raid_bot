@@ -14,6 +14,14 @@ class createMessage():
     ex_raid = ""
     lvl_icon = ""
     raid_level = cfg.level
+
+    l5 = ""
+    l4 = ""
+    l3 = ""
+    l2 = ""
+    l1 = ""
+    l = 1
+
     i = 0
     id = 0
     try:
@@ -26,7 +34,7 @@ class createMessage():
         zeit_start = zeit_start + datetime.timedelta(hours=1)
         zeit_end = zeit_end + datetime.timedelta(hours=1)
 
-        ex_raid = " \u274C " if Sql.ex_raid == 1 else " "
+        ex_raid = " \u274C " if Sql.ex_raid[i] == 1 else " "
 
         if Sql.team_id[i] == 2:
           team = "\u2764"         # red
@@ -38,26 +46,26 @@ class createMessage():
           team = "\U0001F90D"     # none
 
         if level == 5:
-          lvl_icon = "\u0035"
+          lvl_icon = "\u0035\uFE0F\u20E3"
         elif level == 4:
-          lvl_icon = "\u0034"
+          lvl_icon = "\u0034\uFE0F\u20E3"
         elif level == 3:
-          lvl_icon = "\u0033"
+          lvl_icon = "\u0033\uFE0F\u20E3"
         elif level == 2:
-          lvl_icon = "\u0032"
+          lvl_icon = "\u0032\uFE0F\u20E3"
         elif level == 1:
-          lvl_icon = "\u0031"
+          lvl_icon = "\u0031\uFE0F\u20E3"
 
         if Sql.pokemon_id[i] is None:
           move = ""
           kurzattacke = ""
           ladeattacke = ""
-          raid = lvl_icon + " Egg: "
+          raid = "Egg: "
         else:
           kurzattacke = "\n└ " + attacke.getShortAttack(Sql.move_1[i])
           ladeattacke = attacke.getLoadAttack(Sql.move_2[i])
           move = kurzattacke + "/" + ladeattacke
-          raid = lvl_icon + " " + pokeID.getPokemon(Sql.pokemon_id[i]) + ex_raid + pokeID.getGeschlecht(Sql.gender[i])
+          raid = pokeID.getPokemon(Sql.pokemon_id[i]) + " " + pokeID.getGeschlecht(Sql.gender[i]) + " "
 
         if Sql.level[i] in (raid_level):
           if send.list_output.__contains__(encounter):
@@ -70,11 +78,30 @@ class createMessage():
             list_string = list_string.split(', ') 
             id = list_string[send.list_output.index(encounter)]
           else:
-            bolt_line = str(raid) + str(zeit_start.hour) + ":" + str(Help.nice_time(str(zeit_start.minute))) + " - " + str(zeit_end.hour) + ":" + str(Help.nice_time(str(zeit_end.minute)))
-            normal_line = str(name)
+            bolt_line = str(lvl_icon) + " " + str(raid) + str(zeit_start.hour) + ":" + str(Help.nice_time(str(zeit_start.minute))) + " - " + str(zeit_end.hour) + ":" + str(Help.nice_time(str(zeit_end.minute)))
+            normal_line = str(name) + ex_raid
             id = send.send(bolt_line,normal_line,encounter,Sql.latitude[i],Sql.longitude[i])
           i +=1
-          overview += "<b>" + str(team) + str(raid) + " " + str(zeit_start.hour) + ":" + str(Help.nice_time(str(zeit_start.minute))) + " - " + str(zeit_end.hour) + ":" + str(Help.nice_time(str(zeit_end.minute))) + "</b>" + str(move) + "\n└ <a href='" + cfg.ivchatUrl + "/" + str(id) + "'>" + str(name) + "</a>\n"
+          
+          header = "\n<b>Level " + str(lvl_icon) + " Raids:</b>\n"
+          
+          if not l5 and level == 5:
+            l5 = header
+            overview = overview + l5
+          if not l4 and level == 4:
+            l4 = header
+            overview = overview + l4
+          if not l3 and level == 3:
+            l3 = header
+            overview = overview + l3
+          if not l2 and level == 2:
+            l2 = header
+            overview = overview + l2
+          if not l1 and level == 1:
+            l1 = header
+            overview = overview + l1
+          
+          overview += "<b>" + str(team) + str(raid) + " " + str(zeit_start.hour) + ":" + str(Help.nice_time(str(zeit_start.minute))) + " - " + str(zeit_end.hour) + ":" + str(Help.nice_time(str(zeit_end.minute))) + "</b>" + str(move) + "\n└ <a href='" + cfg.ivchatUrl + "/" + str(id) + "'>" + str(name) + "</a>" + str(ex_raid) + "\n"
       send.sendOverview(overview)
       
     except Exception as e:
