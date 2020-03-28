@@ -18,6 +18,7 @@ class Config():
   chatId = ""
   chatUrl = ""
   level = ""
+  language = ""
   areaName = ""
   min_latitude = ""
   max_latitude = ""
@@ -41,6 +42,7 @@ class Config():
     self.chatUrl = parser.get('Bot Settings', 'chat_url')
 
     self.level = ast.literal_eval(parser.get("Raids", "level"))
+    self.language = parser.get("Raids", "language")
 
     self.areaName = parser.get('Geofence', 'areaName')
     self.min_latitude = parser.get('Geofence', 'minLat')

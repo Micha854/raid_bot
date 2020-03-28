@@ -5,7 +5,7 @@ import datetime
 import helper
 
 class createMessage():
-  
+
   def create(self,Sql,send,sleep,cfg):
     attacke = attacks.attacks()
     pokeID = pokemon.pokemon()
@@ -29,7 +29,7 @@ class createMessage():
 
     try:
       for encounter in Sql.gym_id:
-        name = Sql.name[i]
+        name = "Unknown Area" if Sql.name[i] is None else Sql.name[i]
         level = Sql.level[i]
         zeit_start = Sql.start[i]
         zeit_end = Sql.end[i]
@@ -64,13 +64,13 @@ class createMessage():
           ladeattacke = ""
           move = ""
           moveV= ""
-          raid = "Egg \U0001F95A "
+          raid = self.getText("egg",cfg.language) + " \U0001F95A "
         else:
-          kurzattacke = "\n├ " + attacke.getShortAttack(Sql.move_1[i])
-          ladeattacke = attacke.getLoadAttack(Sql.move_2[i])
+          kurzattacke = "\n├ " + attacke.getShortAttack(Sql.move_1[i],cfg.language)
+          ladeattacke = attacke.getLoadAttack(Sql.move_2[i],cfg.language)
           move = kurzattacke + "/" + ladeattacke
-          moveV= "\u2694 " + attacke.getShortAttack(Sql.move_1[i]) + "/" + attacke.getLoadAttack(Sql.move_2[i])
-          raid = pokeID.getPokemon(Sql.pokemon_id[i]) + " " + pokeID.getGeschlecht(Sql.gender[i]) + " "
+          moveV= "\u2694 " + attacke.getShortAttack(Sql.move_1[i],cfg.language) + "/" + attacke.getLoadAttack(Sql.move_2[i],cfg.language)
+          raid = pokeID.getPokemon(Sql.pokemon_id[i],cfg.language) + " " + pokeID.getGeschlecht(Sql.gender[i]) + " "
 
         if Sql.level[i] in (raid_level):
           with open(cfg.areaName+"eggs.txt") as input:
@@ -125,7 +125,7 @@ class createMessage():
           
           overview += "<b>" + str(team) + str(raid) + str(zeit_start.hour) + ":" + str(Help.nice_time(str(zeit_start.minute))) + " - " + str(zeit_end.hour) + ":" + str(Help.nice_time(str(zeit_end.minute))) + "</b>" + str(move) + "\n└ <a href='" + cfg.ivchatUrl + "/" + str(id) + "'>" + str(name) + "</a>" + str(ex_raid) + "\n"
         i +=1
-      send.sendOverview(overview)
+      send.sendOverview(overview,self.getText("noRaids",cfg.language))
       print("\nAktuell " + str(x) + " Raids (" + str(i) + ")\n")
 
       # DEBUG:
@@ -154,3 +154,18 @@ class createMessage():
         ausgabe += "Wert i" + str(i) + "\n"
         outF.writelines(ausgabe + str(e))
         outF.close()
+
+  def getText(self,value,language):
+    text = {
+      "noRaids": {
+        "de": "Aktuell keine Raids vorhanden",
+        "en": "no raids currently available",
+        "fr": "pas de raids disponibles"
+      },
+      "egg": {
+        "de": "Ei",
+        "en": "egg",
+        "fr": "oeuf"
+      }
+    }
+    return text[value][language]

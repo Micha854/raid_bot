@@ -10,7 +10,6 @@ class sendMessage():
   eggs = []
   overview_old = ""
   overviewId = 0
-  count = 0
   areaName = ""
   
   def changeBossEgg(self,bolt_line,normal_line,encounter,latitude,longitude,id,pos):
@@ -52,9 +51,9 @@ class sendMessage():
     except:
       print(self.areaName+" Nachricht konnte nicht versendet werden")
   
-  def sendOverview(self,message):
+  def sendOverview(self,message,text):
     if message == "":
-      message = "Aktuell keine Raids vorhanden"
+      message = text
     if not message == self.overview_old:
       if len(message) <= len(self.overview_old):
         try:
