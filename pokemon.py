@@ -3858,9 +3858,9 @@ class pokemon():
         "fr": "Concombaffe"
       },
       772: {
-        "de": "Typ:Null",
-        "en": "Type: Null",
-        "fr": "Silvallié"
+        "de": "Null",
+        "en": "Null",
+        "fr": "NULL"
       },
       773: {
         "de": "Amigento",
