@@ -5,6 +5,7 @@ import datetime
 import helper
 
 class createMessage():
+  
   def create(self,Sql,send,sleep,cfg):
     attacke = attacks.attacks()
     pokeID = pokemon.pokemon()
@@ -14,16 +15,18 @@ class createMessage():
     ex_raid = ""
     lvl_icon = ""
     raid_level = cfg.level
-
     l5 = ""
     l4 = ""
     l3 = ""
     l2 = ""
     l1 = ""
-    l = 1
 
-    i = 0
+    i = 0 # all found raids
+    x = 0 # raids that will be send
     id = 0
+
+    print("####################==========\\ " + str(datetime.datetime.now()) + " /==========####################")
+
     try:
       for encounter in Sql.gym_id:
         name = Sql.name[i]
@@ -57,19 +60,28 @@ class createMessage():
           lvl_icon = "\u0031\uFE0F\u20E3"
 
         if Sql.pokemon_id[i] is None:
-          move = ""
           kurzattacke = ""
           ladeattacke = ""
-          raid = "Egg: "
+          move = ""
+          moveV= ""
+          raid = "Egg \U0001F95A "
         else:
-          kurzattacke = "\n└ " + attacke.getShortAttack(Sql.move_1[i])
+          kurzattacke = "\n├ " + attacke.getShortAttack(Sql.move_1[i])
           ladeattacke = attacke.getLoadAttack(Sql.move_2[i])
           move = kurzattacke + "/" + ladeattacke
+          moveV= "\u2694 " + attacke.getShortAttack(Sql.move_1[i]) + "/" + attacke.getLoadAttack(Sql.move_2[i])
           raid = pokeID.getPokemon(Sql.pokemon_id[i]) + " " + pokeID.getGeschlecht(Sql.gender[i]) + " "
 
         if Sql.level[i] in (raid_level):
+          with open(cfg.areaName+"eggs.txt") as input:
+            data = input.read()
+            data = data.replace("[", "").replace("'", "").replace("]", "")
+            data = data.split(', ')
+
+          bolt_line = str(lvl_icon) + " " + str(raid) + str(zeit_start.hour) + ":" + str(Help.nice_time(str(zeit_start.minute))) + " - " + str(zeit_end.hour) + ":" + str(Help.nice_time(str(zeit_end.minute)))
+          normal_line = str(team) + " " + str(name) + ex_raid + moveV
+
           if send.list_output.__contains__(encounter):
-            print(cfg.areaName+" bereits gesendet")
             f = open(cfg.areaName+"output.txt", "r")
               # Split the string based on space delimiter 
             list_string = f.read()
@@ -77,13 +89,23 @@ class createMessage():
             f.close()
             list_string = list_string.split(', ') 
             id = list_string[send.list_output.index(encounter)]
+
+            pos = list_string.index(id)
+            egg = data[pos]
+            send.eggs.__contains__(encounter)
+            
+            print("\n" + str(name) + " (ID: " + str(id) + ", index: " + str(pos) + ")")
+            print("egg: " + str(egg))
+
+            if egg == encounter and not Sql.pokemon_id[i] == None:
+              send.changeBossEgg(bolt_line,normal_line,encounter,Sql.latitude[i],Sql.longitude[i],id,pos)
+
           else:
-            bolt_line = str(lvl_icon) + " " + str(raid) + str(zeit_start.hour) + ":" + str(Help.nice_time(str(zeit_start.minute))) + " - " + str(zeit_end.hour) + ":" + str(Help.nice_time(str(zeit_end.minute)))
-            normal_line = str(name) + ex_raid
-            id = send.send(bolt_line,normal_line,encounter,Sql.latitude[i],Sql.longitude[i])
-          i +=1
+            id = send.send(bolt_line,normal_line,encounter,Sql.latitude[i],Sql.longitude[i],Sql.pokemon_id[i])
+            print("===> found [" + str(i) + "] level " + str(level) + " " + str(raid))
+          x +=1
           
-          header = "\n<b>Level " + str(lvl_icon) + " Raids:</b>\n"
+          header = "\n<b>## Level " + str(lvl_icon) + " Raids</b> \U0001F44A\n"
           
           if not l5 and level == 5:
             l5 = header
@@ -101,8 +123,17 @@ class createMessage():
             l1 = header
             overview = overview + l1
           
-          overview += "<b>" + str(team) + str(raid) + " " + str(zeit_start.hour) + ":" + str(Help.nice_time(str(zeit_start.minute))) + " - " + str(zeit_end.hour) + ":" + str(Help.nice_time(str(zeit_end.minute))) + "</b>" + str(move) + "\n└ <a href='" + cfg.ivchatUrl + "/" + str(id) + "'>" + str(name) + "</a>" + str(ex_raid) + "\n"
+          overview += "<b>" + str(team) + str(raid) + str(zeit_start.hour) + ":" + str(Help.nice_time(str(zeit_start.minute))) + " - " + str(zeit_end.hour) + ":" + str(Help.nice_time(str(zeit_end.minute))) + "</b>" + str(move) + "\n└ <a href='" + cfg.ivchatUrl + "/" + str(id) + "'>" + str(name) + "</a>" + str(ex_raid) + "\n"
+        i +=1
       send.sendOverview(overview)
+      print("\nAktuell " + str(x) + " Raids (" + str(i) + ")\n")
+
+      # DEBUG:
+      #f = open("TEST.txt", "a")
+      #f.writelines("\n\n####################==========\\ " + str(datetime.datetime.now()) + " /==========####################")
+      #f.writelines("len ==> " + str(len(overview)) + "\n")
+      #f.writelines(str(overview))
+      #f.close()
       
     except Exception as e:
         outF = open(Sql.areaName+"error.txt","w")

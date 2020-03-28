@@ -651,6 +651,8 @@ class pokemon():
         647: "Keldeo",
         648: "Meloetta",
         649: "Genesect",
+        808: "Meltan",
+        809: "Melmetal",
     }
     return switch.get(value,lambda: str(value))###davor den iv wert aus der liste auslesen
 

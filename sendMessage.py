@@ -7,15 +7,44 @@ class sendMessage():
   bot = ""
   list_output = [] ##Beinhaltet alle Encounters welche versendet wurden
   list_message_ID = []
+  eggs = []
   overview_old = ""
   overviewId = 0
+  count = 0
   areaName = ""
+  
+  def changeBossEgg(self,bolt_line,normal_line,encounter,latitude,longitude,id,pos):
+    try:
+      self.bot.delete_message(self.ivchatID,id)
+    except:
+      print(self.areaName+" Egg Nachricht konnte nicht gelöscht werden, ID:" + str(id) + " in chatID: " + str(self.ivchatID))
+    try:
+      id = self.bot.send_venue(self.ivchatID,latitude,longitude,bolt_line,normal_line,disable_notification=True)
+      self.list_message_ID[pos] = id.message_id
+      self.eggs[pos] = "change to raid"
+      outE = open(self.areaName+"eggs.txt","w")
+      outE.writelines(str(self.eggs))
+      outE.close()
+      
+      outF = open(self.areaName+"output.txt","w")
+      outF.writelines(str(self.list_message_ID))
+      outF.close()
+    except:
+      print(self.areaName+" Neue Boss Nachricht konnte nicht gesendet werden")
 
-  def send(self,bolt_line,normal_line,encounter,latitude,longitude):
-    try: 
+  def send(self,bolt_line,normal_line,encounter,latitude,longitude,pokemon_id):
+    try:
       id = self.bot.send_venue(self.ivchatID,latitude,longitude,bolt_line,normal_line,disable_notification=True)
       self.list_output.append(encounter)
       self.list_message_ID.append(id.message_id)
+      if not pokemon_id == None:
+        self.eggs.append("active raid")
+      else:
+        self.eggs.append(encounter)
+      outE = open(self.areaName+"eggs.txt","w")
+      outE.writelines(str(self.eggs))
+      outE.close()
+
       outF = open(self.areaName+"output.txt","w")
       outF.writelines(str(self.list_message_ID))
       outF.close()
@@ -53,7 +82,7 @@ class sendMessage():
    
   def clearOutputList(self,encounter):
     i = 0
-    print(self.areaName+" Checke Outputliste\n")
+    print(self.areaName+" Checke Outputliste")
     for encount in self.list_output:
       if not encounter.__contains__(encount):
         try:
@@ -61,12 +90,17 @@ class sendMessage():
           self.bot.delete_message(self.ivchatID,self.list_message_ID[i])
           self.list_message_ID.__delitem__(i)
           self.list_output.__delitem__(i)
+          self.eggs.__delitem__(i)
         except:
           print(self.areaName+" Nachricht konnte nicht entfernt werden")
       i +=1
     outF = open(self.areaName+"output.txt","w")
     outF.writelines(str(self.list_message_ID))
     outF.close()
+
+    outE = open(self.areaName+"eggs.txt","w")
+    outE.writelines(str(self.eggs))
+    outE.close()
 
   def setConfig(self,token,ivchatID,chatID,areaName):
     self.areaName = areaName
