@@ -9,6 +9,14 @@ import sys
 import time
 import clear
 
+# set the correct gmt timezone
+from datetime import datetime
+millis = 1288483950000
+ts = millis * 1e-3
+utc_offset = datetime.fromtimestamp(ts) - datetime.utcfromtimestamp(ts)
+offset = str(utc_offset)
+gmt = int(offset[0])
+
 ####Lade das Configfile
 cfg = config.Config()
 try:
@@ -29,7 +37,7 @@ if cfg.level:
     Sql.startSQL(cfg)
     send.clearOutputList(Sql.gym_id)
     create = createMessage.createMessage()
-    create.create(Sql,send,cfg.sleepTime,cfg)
+    create.create(Sql,send,cfg.sleepTime,cfg,gmt)
     time.sleep(int(cfg.sleepTime))
 else:
 	print("Es wurde kein Raid Level aktiviert !!!")

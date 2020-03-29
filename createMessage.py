@@ -6,7 +6,7 @@ import helper
 
 class createMessage():
 
-  def create(self,Sql,send,sleep,cfg):
+  def create(self,Sql,send,sleep,cfg,gmt):
     attacke = attacks.attacks()
     pokeID = pokemon.pokemon()
     Help = helper.Helper()
@@ -34,8 +34,8 @@ class createMessage():
         zeit_start = Sql.start[i]
         zeit_end = Sql.end[i]
 
-        zeit_start = zeit_start + datetime.timedelta(hours=1)
-        zeit_end = zeit_end + datetime.timedelta(hours=1)
+        zeit_start = zeit_start + datetime.timedelta(hours=gmt)
+        zeit_end = zeit_end + datetime.timedelta(hours=gmt)
 
         ex_raid = " \u274C " if Sql.ex_raid[i] == 1 else " "
 
@@ -169,3 +169,10 @@ class createMessage():
       }
     }
     return text[value][language]
+
+  def gmt(self, datetime):
+    millis = 1288483950000
+    ts = millis * 1e-3
+    utc_offset = datetime.fromtimestamp(ts) - datetime.utcfromtimestamp(ts)
+    gmt = str(utc_offset)
+    return gmt[0]
