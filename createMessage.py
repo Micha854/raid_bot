@@ -159,13 +159,13 @@ class createMessage():
     text = {
       "noRaids": {
         "de": "Aktuell keine Raids vorhanden",
-        "en": "no raids currently available",
-        "fr": "pas de raids disponibles"
+        "en": "No raids currently available",
+        "fr": "Pas de raids disponibles actuellement"
       },
       "egg": {
         "de": "Ei",
-        "en": "egg",
-        "fr": "oeuf"
+        "en": "Egg",
+        "fr": "Oeuf"
       }
     }
     return text[value][language]
