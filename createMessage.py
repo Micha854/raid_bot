@@ -101,8 +101,13 @@ class createMessage():
               send.changeBossEgg(bolt_line,normal_line,encounter,Sql.latitude[i],Sql.longitude[i],id,pos)
 
           else:
-            id = send.send(bolt_line,normal_line,encounter,Sql.latitude[i],Sql.longitude[i],Sql.pokemon_id[i])
             print("===> found [" + str(i) + "] level " + str(level) + " " + str(raid))
+            try:
+              id = send.send(bolt_line,normal_line,encounter,Sql.latitude[i],Sql.longitude[i],Sql.pokemon_id[i])
+            except:
+              print ("Fehler beim senden... Warte 60 Sekunden")
+              time.sleep(60)
+              id = send.send(bolt_line,normal_line,encounter,Sql.latitude[i],Sql.longitude[i],Sql.pokemon_id[i])
           x +=1
           
           header = "\n<b>## Level " + str(lvl_icon) + " Raids</b> \U0001F44A\n"
