@@ -14,6 +14,7 @@ class createMessage():
     team = ""
     ex_raid = ""
     lvl_icon = ""
+    clock = cfg.clockformat
     raid_level = cfg.level
     l5 = ""
     l4 = ""
@@ -36,6 +37,15 @@ class createMessage():
 
         zeit_start = zeit_start + datetime.timedelta(hours=gmt)
         zeit_end = zeit_end + datetime.timedelta(hours=gmt)
+
+        if clock == 12:
+          t_start = time.strptime(str(zeit_start.hour)+":"+Help.nice_time(str(zeit_start.minute)), "%H:%M")
+          t_end = time.strptime(str(zeit_end.hour)+":"+Help.nice_time(str(zeit_end.minute)), "%H:%M")
+          raid_start = time.strftime( "%I:%M %p", t_start )
+          raid_end = time.strftime( "%I:%M %p", t_end )
+        else:
+          raid_start = str(zeit_start.hour) + ":" + str(Help.nice_time(str(zeit_start.minute)))
+          raid_end = str(zeit_end.hour) + ":" + str(Help.nice_time(str(zeit_end.minute)))
 
         ex_raid = " \u274C " if Sql.ex_raid[i] == 1 else " "
 
@@ -78,7 +88,7 @@ class createMessage():
             data = data.replace("[", "").replace("'", "").replace("]", "")
             data = data.split(', ')
 
-          bolt_line = str(lvl_icon) + " " + str(raid) + str(zeit_start.hour) + ":" + str(Help.nice_time(str(zeit_start.minute))) + " - " + str(zeit_end.hour) + ":" + str(Help.nice_time(str(zeit_end.minute)))
+          bolt_line = str(lvl_icon) + " " + raid_start + " - " + raid_end
           normal_line = str(team) + " " + str(name) + ex_raid + moveV
 
           if send.list_output.__contains__(encounter):
@@ -128,7 +138,7 @@ class createMessage():
             l1 = header
             overview = overview + l1
           
-          overview += "<b>" + str(team) + str(raid) + str(zeit_start.hour) + ":" + str(Help.nice_time(str(zeit_start.minute))) + " - " + str(zeit_end.hour) + ":" + str(Help.nice_time(str(zeit_end.minute))) + "</b>" + str(move) + "\n└ <a href='" + cfg.ivchatUrl + "/" + str(id) + "'>" + str(name) + "</a>" + str(ex_raid) + "\n"
+          overview += "<b>" + str(team) + str(raid) + raid_start + " - " + raid_end + "</b>" + str(move) + "\n└ <a href='" + cfg.ivchatUrl + "/" + str(id) + "'>" + str(name) + "</a>" + str(ex_raid) + "\n"
         i +=1
       send.sendOverview(overview,self.getText("noRaids",cfg.language))
       print("\nAktuell " + str(x) + " Raids (" + str(i) + ")\n")
