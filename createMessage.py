@@ -140,7 +140,7 @@ class createMessage():
             overview = overview + l1
           
           if cfg.ivchatId:
-            linked = linked = cfg.ivchatUrl + "/" + str(id)
+            linked = cfg.ivchatUrl + "/" + str(id)
           else:
             linked = "https://maps.google.de/?q=" + str(Sql.latitude[i]) + ", " + str(Sql.longitude[i])
             
