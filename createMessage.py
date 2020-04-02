@@ -112,12 +112,13 @@ class createMessage():
 
           else:
             print("===> found [" + str(i) + "] level " + str(level) + " " + str(raid))
-            try:
-              id = send.send(bolt_line,normal_line,encounter,Sql.latitude[i],Sql.longitude[i],Sql.pokemon_id[i])
-            except:
-              print ("Fehler beim senden... Warte 60 Sekunden")
-              time.sleep(60)
-              id = send.send(bolt_line,normal_line,encounter,Sql.latitude[i],Sql.longitude[i],Sql.pokemon_id[i])
+            if cfg.ivchatId:
+              try:
+                id = send.send(bolt_line,normal_line,encounter,Sql.latitude[i],Sql.longitude[i],Sql.pokemon_id[i])
+              except:
+                print ("Fehler beim senden... Warte 60 Sekunden")
+                time.sleep(60)
+                id = send.send(bolt_line,normal_line,encounter,Sql.latitude[i],Sql.longitude[i],Sql.pokemon_id[i])
           x +=1
           
           header = "\n<b>## Level " + str(lvl_icon) + " Raids</b> \U0001F44A\n"
@@ -138,7 +139,12 @@ class createMessage():
             l1 = header
             overview = overview + l1
           
-          overview += "<b>" + str(team) + str(raid) + raid_start + " - " + raid_end + "</b>" + str(move) + "\n└ <a href='" + cfg.ivchatUrl + "/" + str(id) + "'>" + str(name) + "</a>" + str(ex_raid) + "\n"
+          if cfg.ivchatId:
+            linked = linked = cfg.ivchatUrl + "/" + str(id)
+          else:
+            linked = "https://maps.google.de/?q=" + str(Sql.latitude[i]) + ", " + str(Sql.longitude[i])
+            
+          overview += "<b>" + str(team) + str(raid) + raid_start + " - " + raid_end + "</b>" + str(move) + "\n└ <a href='" + linked + "'>" + str(name) + "</a>" + str(ex_raid) + "\n"
         i +=1
       send.sendOverview(overview,self.getText("noRaids",cfg.language))
       print("\nAktuell " + str(x) + " Raids (" + str(i) + ")\n")
