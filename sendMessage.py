@@ -14,11 +14,11 @@ class sendMessage():
   
   def changeBossEgg(self,bolt_line,normal_line,encounter,latitude,longitude,id,pos):
     try:
-      self.bot.delete_message(self.ivchatID,id)
+      self.bot.delete_message(self.singlechatID,id)
     except:
-      print(self.areaName+" Egg Nachricht konnte nicht gelöscht werden, ID:" + str(id) + " in chatID: " + str(self.ivchatID))
+      print(self.areaName+" Egg Nachricht konnte nicht gelöscht werden, ID:" + str(id) + " in chatID: " + str(self.singlechatID))
     try:
-      id = self.bot.send_venue(self.ivchatID,latitude,longitude,bolt_line,normal_line,disable_notification=True)
+      id = self.bot.send_venue(self.singlechatID,latitude,longitude,bolt_line,normal_line,disable_notification=True)
       self.list_message_ID[pos] = id.message_id
       self.eggs[pos] = "change to raid"
       outE = open(self.areaName+"eggs.txt","w")
@@ -33,7 +33,7 @@ class sendMessage():
 
   def send(self,bolt_line,normal_line,encounter,latitude,longitude,pokemon_id):
     try:
-      id = self.bot.send_venue(self.ivchatID,latitude,longitude,bolt_line,normal_line,disable_notification=True)
+      id = self.bot.send_venue(self.singlechatID,latitude,longitude,bolt_line,normal_line,disable_notification=True)
       self.list_output.append(encounter)
       self.list_message_ID.append(id.message_id)
       if not pokemon_id == None:
@@ -86,7 +86,7 @@ class sendMessage():
       if not encounter.__contains__(encount):
         try:
           print(self.areaName+" Entferne Nachricht")
-          self.bot.delete_message(self.ivchatID,self.list_message_ID[i])
+          self.bot.delete_message(self.singlechatID,self.list_message_ID[i])
           self.list_message_ID.__delitem__(i)
           self.list_output.__delitem__(i)
           self.eggs.__delitem__(i)
@@ -101,8 +101,8 @@ class sendMessage():
     outE.writelines(str(self.eggs))
     outE.close()
 
-  def setConfig(self,token,ivchatID,chatID,areaName):
+  def setConfig(self,token,singlechatID,chatID,areaName):
     self.areaName = areaName
-    self.ivchatID = ivchatID
+    self.singlechatID = singlechatID
     self.chatID = chatID
     self.bot = telebot.TeleBot(token)

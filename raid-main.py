@@ -44,10 +44,10 @@ except:
 
 if cfg.level:
   clear = clear.Clear()
-  clear.clear(cfg.token,cfg.ivchatId,cfg)
+  clear.clear(cfg.token,cfg.singlechatId,cfg)
 
   send = sendMessage.sendMessage()
-  send.setConfig(cfg.token,cfg.ivchatId,cfg.chatId,cfg.areaName)
+  send.setConfig(cfg.token,cfg.singlechatId,cfg.chatId,cfg.areaName)
   sys.stdout.write("\x1b]2;%s\x07" % cfg.areaName)
   
   while 1 == 1:

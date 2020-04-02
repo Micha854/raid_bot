@@ -112,7 +112,7 @@ class createMessage():
 
           else:
             print("===> found [" + str(i) + "] level " + str(level) + " " + str(raid))
-            if cfg.ivchatId:
+            if cfg.singlechatId:
               try:
                 id = send.send(bolt_line,normal_line,encounter,Sql.latitude[i],Sql.longitude[i],Sql.pokemon_id[i])
               except:
@@ -139,8 +139,8 @@ class createMessage():
             l1 = header
             overview = overview + l1
           
-          if cfg.ivchatId:
-            linked = cfg.ivchatUrl + "/" + str(id)
+          if cfg.singlechatId:
+            linked = cfg.singlechatUrl + "/" + str(id)
           else:
             linked = "https://maps.google.de/?q=" + str(Sql.latitude[i]) + ", " + str(Sql.longitude[i])
             
