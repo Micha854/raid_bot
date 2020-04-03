@@ -2,7 +2,7 @@ import telebot
 import time
 
 class Clear():
-  def clear(self,token,ivchatID,cfg):
+  def clear(self,token,singlechatID,cfg):
     bot = telebot.TeleBot(token)
     try:
       f = open(cfg.areaName+"output.txt", "r")
@@ -14,6 +14,6 @@ class Clear():
     oldMessages = oldMessages.split(', ') 
     for messageID in oldMessages:
       try:
-        bot.delete_message(ivchatID,message_id=messageID)
+        bot.delete_message(singlechatID,message_id=messageID)
       except:
         print("Nachricht konnte nicht entfernt werden")

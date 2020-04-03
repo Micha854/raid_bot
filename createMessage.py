@@ -88,7 +88,7 @@ class createMessage():
             data = data.replace("[", "").replace("'", "").replace("]", "")
             data = data.split(', ')
 
-          bolt_line = str(lvl_icon) + " " + raid_start + " - " + raid_end
+          bolt_line = str(lvl_icon) + " " + str(raid) + raid_start + " - " + raid_end
           normal_line = str(team) + " " + str(name) + ex_raid + moveV
 
           if send.list_output.__contains__(encounter):
@@ -107,7 +107,7 @@ class createMessage():
             print("\n" + str(name) + " (ID: " + str(id) + ", index: " + str(pos) + ")")
             print("egg: " + str(egg))
 
-            if egg == encounter and not Sql.pokemon_id[i] == None:
+            if egg == encounter and not Sql.pokemon_id[i] == None and cfg.singlechatId:
               send.changeBossEgg(bolt_line,normal_line,encounter,Sql.latitude[i],Sql.longitude[i],id,pos)
 
           else:

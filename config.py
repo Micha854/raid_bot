@@ -38,7 +38,7 @@ class Config():
 
     self.token = parser.get('Bot Settings', 'token')
     self.singlechatId = parser.get('Bot Settings', 'singlechat_id')
-    self.SinglechatUrl = parser.get('Bot Settings', 'singlechat_url')
+    self.singlechatUrl = parser.get('Bot Settings', 'singlechat_url')
     self.chatId = parser.get('Bot Settings', 'chat_id')
     self.chatUrl = parser.get('Bot Settings', 'chat_url')
 
