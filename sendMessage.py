@@ -55,7 +55,7 @@ class sendMessage():
     if message == "":
       message = text
     if not message == self.overview_old:
-      if len(message) <= len(self.overview_old) and raids == old_raids:
+      if self.singlechatID != self.chatID or len(message) <= len(self.overview_old) and raids == old_raids:
         try:
           self.bot.edit_message_text(message,chat_id=self.chatID, message_id=self.overviewId.message_id, parse_mode='HTML',disable_web_page_preview=True) ##Nachricht 
           self.overview_old = message
