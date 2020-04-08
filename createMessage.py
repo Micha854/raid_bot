@@ -24,6 +24,7 @@ class createMessage():
 
     i = 0 # all found raids
     x = 0 # raids that will be send
+    x_old = 0 # old raids
     id = 0
 
     print("####################==========\\ " + str(datetime.datetime.now()) + " /==========####################")
@@ -107,6 +108,8 @@ class createMessage():
             print("\n" + str(name) + " (ID: " + str(id) + ", index: " + str(pos) + ")")
             print("egg: " + str(egg))
 
+            x_old +=1
+
             if egg == encounter and not Sql.pokemon_id[i] == None and cfg.singlechatId:
               send.changeBossEgg(bolt_line,normal_line,encounter,Sql.latitude[i],Sql.longitude[i],id,pos)
 
@@ -146,8 +149,8 @@ class createMessage():
             
           overview += "<b>" + str(team) + str(raid) + raid_start + " - " + raid_end + "</b>" + str(move) + "\n└ <a href='" + linked + "'>" + str(name) + "</a>" + str(ex_raid) + "\n"
         i +=1
-      send.sendOverview(overview,self.getText("noRaids",cfg.language))
-      print("\nAktuell " + str(x) + " Raids (" + str(i) + ")\n")
+      send.sendOverview(overview,self.getText("noRaids",cfg.language),x,x_old)
+      print("\nAktuell " + str(x) + " Raids (old: " + str(x_old) + ", DB: " + str(i) + ")\n")
 
       # DEBUG:
       #f = open("TEST.txt", "a")
