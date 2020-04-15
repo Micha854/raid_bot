@@ -51,11 +51,11 @@ class sendMessage():
     except:
       print(self.areaName+" Nachricht konnte nicht versendet werden")
   
-  def sendOverview(self,message,text):
+  def sendOverview(self,message,text,raids,old_raids):
     if message == "":
       message = text
     if not message == self.overview_old:
-      if len(message) <= len(self.overview_old):
+      if self.singlechatID != self.chatID or len(message) <= len(self.overview_old) and raids == old_raids:
         try:
           self.bot.edit_message_text(message,chat_id=self.chatID, message_id=self.overviewId.message_id, parse_mode='HTML',disable_web_page_preview=True) ##Nachricht 
           self.overview_old = message
