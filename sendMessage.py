@@ -55,7 +55,7 @@ class sendMessage():
     if message == "":
       message = text
     if not message == self.overview_old:
-      if self.singlechatID != self.chatID or len(message) <= len(self.overview_old) and raids == old_raids:
+      if (self.singlechatID != self.chatID) or (len(message) <= len(self.overview_old)) and raids == old_raids:
         try:
           self.bot.edit_message_text(message,chat_id=self.chatID, message_id=self.overviewId.message_id, parse_mode='HTML',disable_web_page_preview=True) ##Nachricht 
           self.overview_old = message
@@ -66,7 +66,11 @@ class sendMessage():
             self.overviewId = self.bot.send_message(self.chatID,message,parse_mode='HTML')
             self.overview_old = message
           except:
-            print(self.areaName+" Nachricht konnte nicht editiert werden")    
+            try:
+              self.overviewId = self.bot.send_message(self.chatID,message,parse_mode='HTML',disable_web_page_preview=True,disable_notification=False)
+              self.overview_old = message
+            except:
+              print(self.areaName+" Nachricht konnte nicht editiert werden")    
       else:
         try: 
           self.bot.delete_message(self.chatID,self.overviewId.message_id)
