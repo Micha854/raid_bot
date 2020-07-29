@@ -219,7 +219,7 @@ class attacks():
         "fr": "Morphing"
       },
       243: {
-        "de": "Kontor",
+        "de": "Konter",
         "en": "Counter",
         "fr": "Riposte"
       },
@@ -1133,6 +1133,16 @@ class attacks():
         "de": "Geofissur",
         "en": "Fissure",
         "fr": "Abîme"
+      },
+      341: {
+        "de": "Fliegen",
+        "en": "Fly",
+        "fr": "Fly"
+      },
+      342: {
+        "de": "V-create",
+        "en": "V-create",
+        "fr": "V-create"
       }
     }
     #return switch.get(value,lambda: str(value))
