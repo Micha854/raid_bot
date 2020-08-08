@@ -13,14 +13,15 @@ class Config():
   user = ""
   password = ""
   token = ""
-  singlechatId = ""
-  singlechatUrl = ""
   chatId = ""
   chatUrl = ""
+  singlechatId = ""
+  singlechatUrl = ""
   level = ""
   language = ""
   clockformat = int
   areaName = ""
+  areaNumber = ""
   min_latitude = ""
   max_latitude = ""
   min_longitude = ""
@@ -37,16 +38,17 @@ class Config():
     self.password = parser.get('Mysql', 'password')
 
     self.token = parser.get('Bot Settings', 'token')
-    self.singlechatId = parser.get('Bot Settings', 'singlechat_id')
-    self.singlechatUrl = parser.get('Bot Settings', 'singlechat_url')
     self.chatId = parser.get('Bot Settings', 'chat_id')
     self.chatUrl = parser.get('Bot Settings', 'chat_url')
+    self.singlechatId = parser.get('Bot Settings', 'singlechat_id')
+    self.singlechatUrl = parser.get('Bot Settings', 'singlechat_url')
 
     self.level = ast.literal_eval(parser.get("Raids", "level"))
     self.language = parser.get("Raids", "language")
     self.clockformat = parser.getint("Raids", "clockformat")
 
     self.areaName = parser.get('Geofence', 'areaName')
+    self.areaNumber = parser.get('Geofence', 'areaNumber')
     self.min_latitude = parser.get('Geofence', 'minLat')
     self.max_latitude = parser.get('Geofence', 'maxLat')
     self.min_longitude = parser.get('Geofence', 'minLon')

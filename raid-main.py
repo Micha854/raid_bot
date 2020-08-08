@@ -8,6 +8,7 @@ import sendMessage
 import sys
 import time
 import clear
+import os
 
 from datetime import datetime
 timestamp = time.time()
@@ -42,13 +43,19 @@ try:
 except:
   cfg.readConfig("config.ini")
 
+if not os.path.exists(cfg.areaName+cfg.areaNumber):
+    os.mkdir(cfg.areaName+cfg.areaNumber)
+    print("Temp Directory " , cfg.areaName+cfg.areaNumber ,  " Created ")
+else:    
+    print("Temp Directory " , cfg.areaName+cfg.areaNumber ,  " already exists")
+
 if cfg.level:
   clear = clear.Clear()
   clear.clear(cfg.token,cfg.singlechatId,cfg)
 
   send = sendMessage.sendMessage()
-  send.setConfig(cfg.token,cfg.singlechatId,cfg.chatId,cfg.areaName)
-  sys.stdout.write("\x1b]2;%s\x07" % cfg.areaName)
+  send.setConfig(cfg.token,cfg.singlechatId,cfg.chatId,cfg.areaName,cfg.areaNumber)
+  sys.stdout.write("\x1b]2;%s\x07" % cfg.areaName+cfg.areaNumber)
   
   while 1 == 1:
     Sql = sql.Sql()

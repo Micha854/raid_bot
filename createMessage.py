@@ -1,5 +1,5 @@
-import attacks
-import pokemon
+import importer
+import json
 import time
 import datetime
 import helper
@@ -7,8 +7,6 @@ import helper
 class createMessage():
 
   def create(self,Sql,send,sleep,cfg,gmt):
-    attacke = attacks.attacks()
-    pokeID = pokemon.pokemon()
     Help = helper.Helper()
     overview = ""
     team = ""
@@ -27,7 +25,8 @@ class createMessage():
     x_old = 0 # old raids
     id = 0
 
-    print("####################==========\\ " + str(datetime.datetime.now()) + " /==========####################")
+    now = datetime.datetime.now()
+    print("\n\n####################==========\\ *** Raid *** Update " + cfg.areaName + cfg.areaNumber + " " + now.strftime("%m/%d/%Y, %H:%M:%S") + " /==========####################\n")
 
     try:
       for encounter in Sql.gym_id:
@@ -50,6 +49,7 @@ class createMessage():
 
         ex_raid = " \u274C " if Sql.ex_raid[i] == 1 else " "
 
+        ### set team ICONS
         if Sql.team_id[i] == 2:
           team = "\u2764"         # red
         elif Sql.team_id[i] == 3:
@@ -59,6 +59,7 @@ class createMessage():
         else:
           team = "\U0001F90D"     # none
 
+        ### set raid level ICONS
         if level == 5:
           lvl_icon = "\u0035\uFE0F\u20E3"
         elif level == 4:
@@ -70,6 +71,16 @@ class createMessage():
         elif level == 1:
           lvl_icon = "\u0031\uFE0F\u20E3"
 
+        if self.getForm(Sql.form[i],cfg.language):
+          getform = "(" + self.getForm(Sql.form[i],cfg.language) + ")"
+        else:
+          getform = ""
+
+        if self.getCostume(Sql.costume[i],cfg.language):
+          getcostume = "(" + self.getCostume(Sql.costume[i],cfg.language) + ")"
+        else:
+          getcostume = ""
+
         if Sql.pokemon_id[i] is None:
           kurzattacke = ""
           ladeattacke = ""
@@ -77,14 +88,14 @@ class createMessage():
           moveV= ""
           raid = self.getText("egg",cfg.language) + " \U0001F95A "
         else:
-          kurzattacke = "\n├ " + attacke.getShortAttack(Sql.move_1[i],cfg.language)
-          ladeattacke = attacke.getLoadAttack(Sql.move_2[i],cfg.language)
+          kurzattacke = "\n├ " + self.getShortAttack(Sql.move_1[i],cfg.language)
+          ladeattacke = self.getLoadAttack(Sql.move_2[i],cfg.language)
           move = kurzattacke + "/" + ladeattacke
-          moveV= "\u2694 " + attacke.getShortAttack(Sql.move_1[i],cfg.language) + "/" + attacke.getLoadAttack(Sql.move_2[i],cfg.language)
-          raid = pokeID.getPokemon(Sql.pokemon_id[i],cfg.language) + " " + pokeID.getGeschlecht(Sql.gender[i]) + " "
+          moveV= "\u2694 " + self.getShortAttack(Sql.move_1[i],cfg.language) + "/" + self.getLoadAttack(Sql.move_2[i],cfg.language)
+          raid = self.getPokemon(Sql.pokemon_id[i],cfg.language) + getform + getcostume + " " + self.getGeschlecht(Sql.gender[i]) + " "
 
         if Sql.level[i] in (raid_level):
-          with open(cfg.areaName+"eggs.txt") as input:
+          with open(cfg.areaName+cfg.areaNumber+"/eggs.txt") as input:
             data = input.read()
             data = data.replace("[", "").replace("'", "").replace("]", "")
             data = data.split(', ')
@@ -93,7 +104,7 @@ class createMessage():
           normal_line = str(team) + " " + str(name) + ex_raid + moveV
 
           if send.list_output.__contains__(encounter):
-            f = open(cfg.areaName+"output.txt", "r")
+            f = open(cfg.areaName+cfg.areaNumber+"/output.txt", "r")
               # Split the string based on space delimiter 
             list_string = f.read()
             list_string = list_string[1:len(list_string)-1]
@@ -160,7 +171,7 @@ class createMessage():
       #f.close()
       
     except Exception as e:
-        outF = open(Sql.areaName+"error.txt","w")
+        outF = open(Sql.areaName+cfg.areaNumber+"/error.txt","w")
         ausgabe = "Passierte in der CreateMessage.py\n"
         ausgabe += "gym_id: " + str(Sql.gym_id.__len__) + "\n"
         ausgabe += "team_id: " + str(Sql.team_id.__len__) + "\n"
@@ -178,7 +189,62 @@ class createMessage():
         ausgabe += "Wert i" + str(i) + "\n"
         outF.writelines(ausgabe + str(e))
         outF.close()
+  
+  ### get pokemon name
+  def getPokemon(self,value,language):
+    data = open('json/Pokemon.json').read()
+    switch = json.loads(data)
+    if not str(value) in switch:
+      return switch["null"][language]
+    else:
+      return switch[str(value)][language]
 
+  ### get pokemon form
+  def getForm(self,value,language):
+    data = open('json/Form.json').read()
+    switch = json.loads(data)
+    if not str(value) in switch:
+      return switch["null"][language]
+    else:
+      return switch[str(value)][language]
+
+  ### get pokemon costume
+  def getCostume(self,value,language):
+    data = open('json/Costume.json').read()
+    switch = json.loads(data)
+    if not str(value) in switch:
+      return switch["null"][language]
+    else:
+      return switch[str(value)][language]
+
+  ### get pokemon gender
+  def getGeschlecht(self,value):
+    if value == 1:
+      return "\U00002642"
+    elif value == 2:
+      return "\U00002640"
+    else:
+      return "\U0000267E"
+      
+  ### get pokemon quick move
+  def getShortAttack(self,value,language):
+    data = open('json/ShortAttack.json').read()
+    switch = json.loads(data)
+    if not str(value) in switch:
+      return switch["null"][language]
+    else:
+      return switch[str(value)][language]
+
+  ### get pokemon load move
+  def getLoadAttack(self,value,language):
+    data = open('json/LoadAttack.json').read()
+    switch = json.loads(data)
+    if not str(value) in switch:
+      return switch["null"][language]
+    else:
+      return switch[str(value)][language]
+      
+  ### tranlate some other text
   def getText(self,value,language):
     text = {
       "noRaids": {

@@ -5,7 +5,7 @@ class Clear():
   def clear(self,token,singlechatID,cfg):
     bot = telebot.TeleBot(token)
     try:
-      f = open(cfg.areaName+"output.txt", "r")
+      f = open(cfg.areaName+cfg.areaNumber+"/output.txt", "r")
     except:
       return
     oldMessages = f.read()
