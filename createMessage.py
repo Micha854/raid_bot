@@ -14,6 +14,7 @@ class createMessage():
     lvl_icon = ""
     clock = cfg.clockformat
     raid_level = cfg.level
+    l6 = ""
     l5 = ""
     l4 = ""
     l3 = ""
@@ -60,7 +61,9 @@ class createMessage():
           team = "\U0001F90D"     # none
 
         ### set raid level ICONS
-        if level == 5:
+        if level == 6:
+          lvl_icon = "\u0036\uFE0F\u20E3"
+        elif level == 5:
           lvl_icon = "\u0035\uFE0F\u20E3"
         elif level == 4:
           lvl_icon = "\u0034\uFE0F\u20E3"
@@ -137,6 +140,9 @@ class createMessage():
           
           header = "\n<b>## Level " + str(lvl_icon) + " Raids</b> \U0001F44A\n"
           
+          if not l6 and level == 6:
+            l6 = header
+            overview = overview + l6
           if not l5 and level == 5:
             l5 = header
             overview = overview + l5
@@ -186,6 +192,8 @@ class createMessage():
         ausgabe += "move_2: " + str(Sql.move_2.__len__) + "\n"
         ausgabe += "gender: " + str(Sql.gender.__len__) + "\n"
         ausgabe += "ex_raid: " + str(Sql.ex_raid.__len__) + "\n"
+        ausgabe += "form: " + str(Sql.form.__len__) + "\n"
+        ausgabe += "costume: " + str(Sql.costume.__len__) + "\n"
         ausgabe += "Wert i" + str(i) + "\n"
         outF.writelines(ausgabe + str(e))
         outF.close()
