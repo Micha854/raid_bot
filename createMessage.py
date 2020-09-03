@@ -92,7 +92,7 @@ class createMessage():
 
         ### get mega evolution
         if Sql.evolution[i] == 3:
-          evolution = " Z"
+          evolution = " Y"
         elif Sql.evolution[i] == 2:
           evolution = " X"
         else:
