@@ -63,7 +63,7 @@ class createMessage():
         ### set raid level ICONS
         if level == 6:
           lvl_icon = "\u0036\uFE0F\u20E3"
-          mega = "Mega "
+          mega = "Mega " if Sql.evolution[i] > 0 else " "
         elif level == 5:
           lvl_icon = "\u0035\uFE0F\u20E3"
           mega = " "
@@ -91,10 +91,10 @@ class createMessage():
           getcostume = ""
 
         ### get mega evolution
-        if Sql.evolution[i] == 2 and Sql.pokemon_id[i] == 6:
+        if Sql.evolution[i] == 3:
+          evolution = " Z"
+        elif Sql.evolution[i] == 2:
           evolution = " X"
-        elif Sql.evolution[i] == 1 and Sql.pokemon_id[i] == 6:
-          evolution = " Y"
         else:
           evolution = ""
 
