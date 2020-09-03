@@ -63,16 +63,22 @@ class createMessage():
         ### set raid level ICONS
         if level == 6:
           lvl_icon = "\u0036\uFE0F\u20E3"
+          mega = "Mega "
         elif level == 5:
           lvl_icon = "\u0035\uFE0F\u20E3"
+          mega = " "
         elif level == 4:
           lvl_icon = "\u0034\uFE0F\u20E3"
+          mega = " "
         elif level == 3:
           lvl_icon = "\u0033\uFE0F\u20E3"
+          mega = " "
         elif level == 2:
           lvl_icon = "\u0032\uFE0F\u20E3"
+          mega = " "
         elif level == 1:
           lvl_icon = "\u0031\uFE0F\u20E3"
+          mega = " "
 
         if self.getForm(Sql.form[i],cfg.language):
           getform = "(" + self.getForm(Sql.form[i],cfg.language) + ")"
@@ -83,6 +89,14 @@ class createMessage():
           getcostume = "(" + self.getCostume(Sql.costume[i],cfg.language) + ")"
         else:
           getcostume = ""
+
+        ### get mega evolution
+        if Sql.evolution[i] == 2 and Sql.pokemon_id[i] == 6:
+          evolution = " X"
+        elif Sql.evolution[i] == 1 and Sql.pokemon_id[i] == 6:
+          evolution = " Y"
+        else:
+          evolution = ""
 
         if Sql.pokemon_id[i] is None:
           kurzattacke = ""
@@ -95,7 +109,7 @@ class createMessage():
           ladeattacke = self.getLoadAttack(Sql.move_2[i],cfg.language)
           move = kurzattacke + "/" + ladeattacke
           moveV= "\u2694 " + self.getShortAttack(Sql.move_1[i],cfg.language) + "/" + self.getLoadAttack(Sql.move_2[i],cfg.language)
-          raid = self.getPokemon(Sql.pokemon_id[i],cfg.language) + getform + getcostume + " " + self.getGeschlecht(Sql.gender[i]) + " "
+          raid = str(mega) + self.getPokemon(Sql.pokemon_id[i],cfg.language) + getform + getcostume + str(evolution) + " " + self.getGeschlecht(Sql.gender[i]) + " "
 
         if Sql.level[i] in (raid_level):
           with open(cfg.areaName+cfg.areaNumber+"/eggs.txt") as input:

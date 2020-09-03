@@ -17,6 +17,7 @@ class Sql():
   ex_raid = []
   form = []
   costume = []
+  evolution = []
 
   def startSQL(self,cfg):
     #Verbindungsaufbau zur MySQL-Datenbank
@@ -42,10 +43,11 @@ class Sql():
     self.ex_raid.clear()
     self.form.clear()
     self.costume.clear()
+    self.evolution.clear()
 
 #Abfragen der Daten aus der Datenbank
 
-    cursor.execute("SELECT r.gym_id,g.team_id,d.name,g.latitude,g.longitude,r.level,r.start,r.end,r.pokemon_id,r.move_1,r.move_2,r.gender,g.is_ex_raid_eligible,r.form,r.costume FROM raid r LEFT JOIN gym g ON r.gym_id = g.gym_id LEFT JOIN gymdetails d ON r.gym_id = d.gym_id WHERE r.end > utc_timestamp() AND g.longitude BETWEEN " + cfg.min_longitude + " AND " + cfg.max_longitude + " AND g.latitude BETWEEN " + cfg.min_latitude + " AND " + cfg.max_latitude + " ORDER BY r.level DESC, r.pokemon_id, r.end")
+    cursor.execute("SELECT r.gym_id,g.team_id,d.name,g.latitude,g.longitude,r.level,r.start,r.end,r.pokemon_id,r.move_1,r.move_2,r.gender,g.is_ex_raid_eligible,r.form,r.costume,r.evolution FROM raid r LEFT JOIN gym g ON r.gym_id = g.gym_id LEFT JOIN gymdetails d ON r.gym_id = d.gym_id WHERE r.end > utc_timestamp() AND g.longitude BETWEEN " + cfg.min_longitude + " AND " + cfg.max_longitude + " AND g.latitude BETWEEN " + cfg.min_latitude + " AND " + cfg.max_latitude + " ORDER BY r.level DESC, r.pokemon_id, r.end")
     all = cursor.fetchall()
     i = 0
     try:
@@ -65,6 +67,7 @@ class Sql():
         self.ex_raid.append(all[i][12])
         self.form.append(all[i][13])
         self.costume.append(all[i][14])
+        self.evolution.append(all[i][15])
         i +=1
     except Exception as e:
       outF = open(cfg.areaName+cfg.areaNumber+"/error.txt","w")
@@ -84,6 +87,7 @@ class Sql():
       ausgabe += "ex_raid: " + str(self.ex_raid.__len__) + "\n"
       ausgabe += "form: " + str(self.form.__len__) + "\n"
       ausgabe += "costume: " + str(self.costume.__len__) + "\n"
+      ausgabe += "evolution: " + str(self.evolution.__len__) + "\n"
       ausgabe += "Wert i" + str(i) + "\n"
       ausgabe += "All Variable: " + str(len(all))
       outF.writelines(ausgabe + str(e))
