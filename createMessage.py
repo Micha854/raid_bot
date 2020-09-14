@@ -80,11 +80,13 @@ class createMessage():
           lvl_icon = "\u0031\uFE0F\u20E3"
           mega = " "
 
+        ### set pokemon form name
         if self.getForm(Sql.form[i],cfg.language):
           getform = "(" + self.getForm(Sql.form[i],cfg.language) + ")"
         else:
           getform = ""
 
+        ### set pokemon costume name
         if self.getCostume(Sql.costume[i],cfg.language):
           getcostume = "(" + self.getCostume(Sql.costume[i],cfg.language) + ")"
         else:

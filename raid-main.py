@@ -26,7 +26,6 @@ if utc_offset_secs < 0:
     utc_offset_secs *= -1
 
 # Build a UTC offset string suitable for use in a timestamp.
-
 if is_behind_utc:
     pos_neg_prefix = "-"
 else:
