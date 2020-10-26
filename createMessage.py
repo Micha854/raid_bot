@@ -7,6 +7,13 @@ import helper
 class createMessage():
 
   def create(self,Sql,send,sleep,cfg,gmt):
+
+### can be configured custom ###
+    
+    limit = 40                # Raid Limit
+
+################################
+
     Help = helper.Helper()
     overview = ""
     team = ""
@@ -156,31 +163,34 @@ class createMessage():
           
           header = "\n<b>## Level " + str(lvl_icon) + " Raids</b> \U0001F44A\n"
           
-          if not l6 and level == 6:
-            l6 = header
-            overview = overview + l6
-          if not l5 and level == 5:
-            l5 = header
-            overview = overview + l5
-          if not l4 and level == 4:
-            l4 = header
-            overview = overview + l4
-          if not l3 and level == 3:
-            l3 = header
-            overview = overview + l3
-          if not l2 and level == 2:
-            l2 = header
-            overview = overview + l2
-          if not l1 and level == 1:
-            l1 = header
-            overview = overview + l1
-          
           if cfg.singlechatId:
             linked = cfg.singlechatUrl + "/" + str(id)
           else:
             linked = "https://maps.google.de/?q=" + str(Sql.latitude[i]) + ", " + str(Sql.longitude[i])
             
-          overview += "<b>" + str(team) + str(raid) + raid_start + " - " + raid_end + "</b>" + str(move) + "\n└ <a href='" + linked + "'>" + str(name) + "</a>" + str(ex_raid) + "\n"
+          if x <= limit:
+            if not l6 and level == 6:
+              l6 = header
+              overview = overview + l6
+            if not l5 and level == 5:
+              l5 = header
+              overview = overview + l5
+            if not l4 and level == 4:
+              l4 = header
+              overview = overview + l4
+            if not l3 and level == 3:
+              l3 = header
+              overview = overview + l3
+            if not l2 and level == 2:
+              l2 = header
+              overview = overview + l2
+            if not l1 and level == 1:
+              l1 = header
+              overview = overview + l1
+
+            overview += "<b>" + str(team) + str(raid) + raid_start + " - " + raid_end + "</b>" + str(move) + "\n└ <a href='" + linked + "'>" + str(name) + "</a>" + str(ex_raid) + "\n"
+          elif x == limit+1:
+            overview += "\n\U00002514 Limit der Liste erreicht...\n"
         i +=1
       send.sendOverview(overview,self.getText("noRaids",cfg.language),x,x_old)
       print("\nAktuell " + str(x) + " Raids (old: " + str(x_old) + ", DB: " + str(i) + ")\n")
