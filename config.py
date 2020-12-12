@@ -22,10 +22,7 @@ class Config():
   clockformat = int
   areaName = ""
   areaNumber = ""
-  min_latitude = ""
-  max_latitude = ""
-  min_longitude = ""
-  max_longitude = ""
+  fence = ""
   sleepTime = ""
 
   def readConfig(self,cfgFile):  
@@ -49,9 +46,6 @@ class Config():
 
     self.areaName = parser.get('Geofence', 'areaName')
     self.areaNumber = parser.get('Geofence', 'areaNumber')
-    self.min_latitude = parser.get('Geofence', 'minLat')
-    self.max_latitude = parser.get('Geofence', 'maxLat')
-    self.min_longitude = parser.get('Geofence', 'minLon')
-    self.max_longitude = parser.get('Geofence', 'maxLon')
+    self.fence = parser.get('Geofence', 'fence')
 
     self.sleepTime = parser.get('Message', 'sleep_time')
