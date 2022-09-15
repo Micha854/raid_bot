@@ -78,7 +78,7 @@ class createMessage():
                 # set raid level ICONS
                 if level == 8:
                     lvl_icon = "\u0038\uFE0F\u20E3"
-                    mega = "Mega "
+                    mega = " "
                 elif level == 7:
                     lvl_icon = "\u0037\uFE0F\u20E3"
                     mega = "Mega "
