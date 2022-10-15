@@ -22,6 +22,7 @@ class createMessage():
         lvl_icon = ""
         clock = cfg.clockformat
         raid_level = cfg.level
+        l9 = ""
         l8 = ""
         l7 = ""
         l6 = ""
@@ -76,7 +77,10 @@ class createMessage():
                     team = "\U0001F90D"     # none
 
                 # set raid level ICONS
-                if level == 8:
+                if level == 9:
+                    lvl_icon = "\u0039\uFE0F\u20E3"
+                    mega = " "
+                elif level == 8:
                     lvl_icon = "\u0038\uFE0F\u20E3"
                     mega = " "
                 elif level == 7:
@@ -199,6 +203,9 @@ class createMessage():
                             str(Sql.latitude[i]) + ", " + str(Sql.longitude[i])
 
                     if x <= limit:
+                        if not l9 and level == 9:
+                            l9 = header
+                            overview = overview + l9
                         if not l8 and level == 8:
                             l8 = header
                             overview = overview + l8
