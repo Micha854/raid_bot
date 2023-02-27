@@ -80,7 +80,7 @@ class createMessage():
                 # set raid level ICONS
                 if level == 10:
                     lvl_icon = "\U0001F51F"
-                    mega = " "
+                    mega = "Proto "
                 elif level == 9:
                     lvl_icon = "\u0039\uFE0F\u20E3"
                     mega = " "
